@@ -8,7 +8,16 @@ namespace NewtonVR
     {
         public Rigidbody Rigidbody;
 
-        public bool CanAttach = true;
+        public bool canAttach = true;
+
+        public virtual bool CanAttach {
+            get {
+                return canAttach && !IsAttached;
+            }
+            set {
+                canAttach = value;
+            }
+        }
 
         public bool AllowTwoHanded = false;
         
@@ -148,11 +157,14 @@ namespace NewtonVR
             }
             else
             {
-                for (int handIndex = (AttachedHands.Count-1); handIndex >= 0; handIndex--)
-                {
-                    NVRHand detaching = AttachedHands[handIndex];
-                    detaching.EndInteraction(this);
-                    this.EndInteraction(detaching);
+                //for (int handIndex = (AttachedHands.Count-1); handIndex >= 0; handIndex--)
+                //{
+                //    NVRHand detaching = AttachedHands[handIndex];
+                //    detaching.EndInteraction(this);
+                //    this.EndInteraction(detaching);
+                //}
+                while (AttachedHands.Count > 0) {
+                    AttachedHands[0].EndInteraction(this);
                 }
             }
         }

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.VR;
@@ -33,6 +33,8 @@ namespace NewtonVR
         public bool MakeControllerInvisibleOnInteraction = false;
         public bool AutomaticallySetControllerTransparency = true;
         public bool VibrateOnHover = true;
+		[Range(100, 3000)]
+		public ushort hoverVibrateDurationMicroseconds = 100;
         public int VelocityHistorySteps = 3;
 
         public UnityEvent OnInitialized;
@@ -44,7 +46,7 @@ namespace NewtonVR
         public bool EditorPlayspaceOverride = false;
         public Vector2 EditorPlayspaceDefault = new Vector2(2, 1.5f);
 
-        public Vector3 PlayspaceSize
+        public virtual Vector3 PlayspaceSize
         {
             get
             {
@@ -153,7 +155,7 @@ namespace NewtonVR
         [HideInInspector]
         public NVRSDKIntegrations CurrentIntegrationType = NVRSDKIntegrations.None;
 
-        private NVRIntegration Integration;
+        protected NVRIntegration Integration;
 
         private Dictionary<Collider, NVRHand> ColliderToHandMapping;
 
@@ -166,8 +168,11 @@ namespace NewtonVR
         public bool AutoSetFixedDeltaTime = true;
         public bool NotifyOnVersionUpdate = true;
 
-        private void Awake()
+		protected virtual void Awake()
         {
+			if (!isActiveAndEnabled) {
+				return;
+			}
             if (AutoSetFixedDeltaTime)
             {
                 Time.fixedDeltaTime = NewtonVRExpectedDeltaTime;
@@ -213,7 +218,7 @@ namespace NewtonVR
             }
         }
 
-        private void SetupIntegration(bool logOutput = true)
+        protected virtual void SetupIntegration(bool logOutput = true)
         {
             CurrentIntegrationType = DetermineCurrentIntegration(logOutput);
 
@@ -247,7 +252,7 @@ namespace NewtonVR
             }
         }
 
-        private NVRSDKIntegrations DetermineCurrentIntegration(bool logOutput = true)
+		protected virtual NVRSDKIntegrations DetermineCurrentIntegration(bool logOutput = true)
         {
             NVRSDKIntegrations currentIntegration = NVRSDKIntegrations.None;
             string resultLog = "[NewtonVR] Version : " + NewtonVRVersion + ". ";
@@ -356,7 +361,7 @@ namespace NewtonVR
             Instances.Remove(this);
         }
 
-        private void Update()
+		protected virtual void Update()
         {
             if (DEBUGDropFrames == true)
             {
@@ -364,6 +369,45 @@ namespace NewtonVR
             }
         }
 
+        public static NVRHand GetCorrespondingHand(Collider collider) {
+
+            if (Instance.LeftHand.IsAColliderOf(collider)) {
+                return Instance.LeftHand;
+            }
+
+            if (Instance.RightHand.IsAColliderOf(collider)) {
+                return Instance.RightHand;
+            }
+
+            return null;
+        }
+
+        public Vector3 HeadOffset {
+            get {
+                return (Head.transform.position - transform.position);
+            }
+        }
+
+        public void Teleport(Vector3 teleportPosition, bool incorporateHeadOffset = false) {
+
+            Vector3 playerMovementAmount = (teleportPosition - transform.position);
+            if (incorporateHeadOffset) {
+                playerMovementAmount -= new Vector3(HeadOffset.x, 0f, HeadOffset.z);
+            }
+
+            //Also teleport what the players are holding.
+            transform.position = transform.position + playerMovementAmount;
+            if (RightHand) {
+                if (RightHand.IsInteracting) {
+                    RightHand.CurrentlyInteracting.transform.position = RightHand.CurrentlyInteracting.transform.position + playerMovementAmount;
+                }
+            }
+            if (LeftHand) {
+                if (LeftHand.IsInteracting) {
+                    LeftHand.CurrentlyInteracting.transform.position = LeftHand.CurrentlyInteracting.transform.position + playerMovementAmount;
+                }
+            }
+        }
 
 #if UNITY_EDITOR
         private static System.DateTime LastRequestedSize;

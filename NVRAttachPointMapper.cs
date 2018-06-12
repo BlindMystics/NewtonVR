@@ -13,6 +13,9 @@ namespace NewtonVR
 
         public static void Register(Collider col, NVRAttachPoint point)
         {
+			if (col == null) {
+				throw new UnityException("Provided collider is null!");
+			}
             Colliders.Add(col, point);
         }
 
