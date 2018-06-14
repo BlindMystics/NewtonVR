@@ -63,6 +63,13 @@ namespace NewtonVR
 		protected int EstimationSamples = 5;
 		protected bool wasHoveringLastFrame = false;
 
+        protected Dictionary<NVRButtons, HapticMaximum> hapticMap = new Dictionary<NVRButtons, HapticMaximum>();
+
+        protected class HapticMaximum {
+            public ushort maximumHapticThisFrame = 0;
+            public int lastFrameWithHaptic = -1;
+        }
+
         [HideInInspector]
         public NVRPhysicalController PhysicalController;
 
@@ -494,15 +501,30 @@ namespace NewtonVR
         {
 			if (InputDevice != null)
             {
-				if (durationMicroSec < 3000)
-                {
-					InputDevice.TriggerHapticPulse(durationMicroSec, button);
-				}
-                else
-                {
-					Debug.LogWarning("You're trying to pulse for over 3000 microseconds, you probably don't want to do that. If you do, use NVRHand.LongHapticPulse(float seconds)");
-				}
-			}
+                if (durationMicroSec >= 3000) {
+                    Debug.LogWarning("You're trying to pulse for over 3000 microseconds, you probably don't want to do that. If you do, use NVRHand.LongHapticPulse(float seconds)");
+                    return;
+                }
+                
+                //Map the button to the stored haptic information.
+                if (!hapticMap.ContainsKey(button)) {
+                    hapticMap.Add(button, new HapticMaximum());
+                }
+                HapticMaximum hapticMaximum = hapticMap[button];
+
+                //Trigger only the largest of haptics that are happening right now.
+                if (hapticMaximum.lastFrameWithHaptic == Time.frameCount) {
+                    if (durationMicroSec > hapticMaximum.maximumHapticThisFrame) {
+                        hapticMaximum.maximumHapticThisFrame = durationMicroSec;
+                    } else {
+                        return;
+                    }
+                } else {
+                    hapticMaximum.maximumHapticThisFrame = durationMicroSec;
+                    hapticMaximum.lastFrameWithHaptic = Time.frameCount;
+                }
+                InputDevice.TriggerHapticPulse(durationMicroSec, button);
+            }
         }
 
 		public void LongHapticPulse(float seconds, ushort intensity = 250, NVRButtons button = NVRButtons.Touchpad)
