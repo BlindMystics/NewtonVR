@@ -16,6 +16,7 @@ namespace NewtonVR
         public float NormalCursorScale = 0.05f;
 
         public bool LaserEnabled = true;
+        public Material LaserMaterial = null;
         public Color LaserColor = Color.blue;
         public float LaserStartWidth = 0.02f;
         public float LaserEndWidth = 0.001f;
@@ -77,11 +78,17 @@ namespace NewtonVR
                     if (LaserEnabled == true)
                     {
                         Lasers[index] = cursor.AddComponent<LineRenderer>();
-                        Lasers[index].material = new Material(Shader.Find("Standard"));
+                        if (LaserMaterial == null) {
+                            Lasers[index].material = new Material(Shader.Find("Standard"));
+                        } else {
+                            Lasers[index].material = new Material(LaserMaterial);
+                            LaserLineMaterialHandler laserMaterialHandler = cursor.AddComponent<LaserLineMaterialHandler>();
+                        }
                         Lasers[index].material.color = LaserColor;
                         NVRHelpers.LineRendererSetColor(Lasers[index], LaserColor, LaserColor);
-                        NVRHelpers.LineRendererSetWidth(Lasers[index], LaserStartWidth, LaserEndWidth);
+                        NVRHelpers.LineRendererSetWidth(Lasers[index], LaserEndWidth, LaserStartWidth);
                         Lasers[index].useWorldSpace = true;
+                        Lasers[index].textureMode = LineTextureMode.Tile;
                         Lasers[index].enabled = false;
                     }
 
@@ -184,7 +191,7 @@ namespace NewtonVR
                         if (LaserEnabled == true)
                         {
                             Lasers[index].enabled = true;
-                            Lasers[index].SetPositions(new Vector3[] { origin, endPoint });
+                            Lasers[index].SetPositions(new Vector3[] { endPoint, origin });
                         }
                     }
 
