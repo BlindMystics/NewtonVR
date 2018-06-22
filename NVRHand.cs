@@ -960,6 +960,11 @@ namespace NewtonVR
         GripToggleOff
     }
 
+    public enum HandSlot {
+        LEFT_HAND,
+        RIGHT_HAND
+    }
+
     public enum InterationStyle
     {
         Hold,
