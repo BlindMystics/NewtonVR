@@ -940,6 +940,18 @@ namespace NewtonVR
             }
             return GhostColliders.Contains(collider);
         }
+
+        public HandSlot DeviceHandSlot {
+            get {
+                if (IsRight) {
+                    return HandSlot.RIGHT_HAND;
+                } else if (IsLeft) {
+                    return HandSlot.LEFT_HAND;
+                } else {
+                    throw new UnityException("I'm not sure whether this is the left or right hand...");
+                }
+            }
+        }
     }
 
     public enum VisibilityLevel
