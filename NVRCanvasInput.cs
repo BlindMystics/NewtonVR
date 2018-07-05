@@ -82,7 +82,7 @@ namespace NewtonVR
                             Lasers[index].material = new Material(Shader.Find("Standard"));
                         } else {
                             Lasers[index].material = new Material(LaserMaterial);
-                            LaserLineMaterialHandler laserMaterialHandler = cursor.AddComponent<LaserLineMaterialHandler>();
+                            cursor.AddComponent<LaserLineMaterialHandler>();
                         }
                         Lasers[index].material.color = LaserColor;
                         NVRHelpers.LineRendererSetColor(Lasers[index], LaserColor, LaserColor);
