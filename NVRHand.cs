@@ -499,6 +499,9 @@ namespace NewtonVR
 
 		public void TriggerHapticPulse(ushort durationMicroSec = 500, NVRButtons button = NVRButtons.Touchpad)
         {
+            if (durationMicroSec == 0) {
+                return;
+            }
 			if (InputDevice != null)
             {
                 if (durationMicroSec >= 3000) {
