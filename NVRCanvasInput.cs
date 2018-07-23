@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -368,5 +369,27 @@ namespace NewtonVR
         {
             return Player.Hands[index].Inputs[NVRButtons.Trigger].PressUp;
         }
+
+
+
+        protected override void OnEnable() {
+            base.OnEnable();
+            //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
+
+        protected override void OnDisable() {
+            base.OnDisable();
+            //Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+        }
+
+        void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
+            Debug.Log("Resetting NVR canvas input.");
+            if (ControllerCamera != null) {
+                DelayedCameraInit();
+            }
+        }
+
     }
 }
