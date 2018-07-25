@@ -46,6 +46,9 @@ namespace NewtonVR
         public bool EditorPlayspaceOverride = false;
         public Vector2 EditorPlayspaceDefault = new Vector2(2, 1.5f);
 
+        [HideInInspector]
+        public Transform alternateTeleportTransform = null;
+
         public virtual Vector3 PlayspaceSize
         {
             get
@@ -396,7 +399,11 @@ namespace NewtonVR
             }
 
             //Also teleport what the players are holding.
-            transform.position = transform.position + playerMovementAmount;
+            Transform toTeleport = transform;
+            if (alternateTeleportTransform != null) {
+                toTeleport = alternateTeleportTransform;
+            }
+            toTeleport.position = toTeleport.position + playerMovementAmount;
             if (RightHand) {
                 if (RightHand.IsInteracting) {
                     RightHand.CurrentlyInteracting.transform.position = RightHand.CurrentlyInteracting.transform.position + playerMovementAmount;
