@@ -109,7 +109,7 @@ namespace NewtonVR
         }
 
         //this is broken up into two steps because of a unity bug. https://issuetracker.unity3d.com/issues/gl-dot-end-error-is-thrown-if-a-cameras-clear-flags-is-set-to-depth-only
-        protected void DelayedCameraInit()
+        public void DelayedCameraInit()
         {
             ControllerCamera.clearFlags = CameraClearFlags.Nothing;
             ControllerCamera.cullingMask = 0; // 1 << LayerMask.NameToLayer("UI"); 

@@ -84,7 +84,21 @@ namespace NewtonVR
         {
             get
             {
-				return CurrentlyHoveringOver.Any(kvp => (kvp.Value.Count > 0 && kvp.Key.CanAttach));
+                //CurrentlyHoveringOver.Remove(null);
+                foreach (KeyValuePair<NVRInteractable, Dictionary<Collider, float>> entry in CurrentlyHoveringOver) {
+                    if (entry.Key == null) {
+                        continue;
+                    }
+                    if (entry.Value.Count <= 0) {
+                        continue;
+                    }
+                    if (!entry.Key.CanAttach) {
+                        continue;
+                    }
+                    return true;
+                }
+                return false;
+                //return CurrentlyHoveringOver.Any(kvp => (kvp.Value.Count > 0 && kvp.Key.CanAttach));
             }
         }
         public bool IsInteracting
