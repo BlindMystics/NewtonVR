@@ -73,7 +73,18 @@ namespace NewtonVR
 
         protected virtual void GetTargetValues(out Vector3 targetHandPosition, out Quaternion targetHandRotation, out Vector3 targetItemPosition, out Quaternion targetItemRotation)
         {
-            if (AttachedHands.Count == 1) //faster path if only one hand, which is the standard scenario
+            if (AttachedHands.Count == 0) {
+                targetHandPosition = Vector3.zero;
+                targetHandRotation = Quaternion.identity;
+
+                if (InteractionPoint != null) {
+                    targetItemPosition = InteractionPoint.position;
+                    targetItemRotation = InteractionPoint.rotation;
+                } else {
+                    targetItemPosition = this.transform.position;
+                    targetItemRotation = this.transform.rotation;
+                }
+            } else if (AttachedHands.Count == 1) //faster path if only one hand, which is the standard scenario
             {
                 NVRHand hand = AttachedHands[0];
 
