@@ -118,10 +118,14 @@ namespace NewtonVR
             Canvas[] canvases = GameObject.FindObjectsOfType<Canvas>();
             foreach (Canvas canvas in canvases)
             {
-                canvas.worldCamera = ControllerCamera;
+                InitNewCanvas(canvas);
             }
 
             DelayedInitialized = true;
+        }
+
+        public void InitNewCanvas(Canvas canvasToInit) {
+            canvasToInit.worldCamera = ControllerCamera;
         }
 
         // use screen midpoint as locked pointer location, enabling look location to be the "mouse"
