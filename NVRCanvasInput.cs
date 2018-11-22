@@ -162,7 +162,7 @@ namespace NewtonVR
 
         // update the cursor location and whether it is enabled
         // this code is based on Unity's DragMe.cs code provided in the UI drag and drop example
-        private bool UpdateCursor(int index, PointerEventData pointData)
+        protected virtual bool UpdateCursor(int index, PointerEventData pointData)
         {
             bool cursorState = false;
 
