@@ -25,9 +25,9 @@ namespace NewtonVR
         public bool OnCanvas;
         public bool CanvasUsed;
         
-        private RectTransform[] Cursors;
+        protected RectTransform[] Cursors;
 
-        private LineRenderer[] Lasers;
+        protected LineRenderer[] Lasers;
 
         private GameObject[] CurrentPoint;
         private GameObject[] CurrentPressed;
@@ -40,7 +40,7 @@ namespace NewtonVR
         
         private Camera ControllerCamera;
 
-        private NVRPlayer Player;
+        protected NVRPlayer Player;
 
         protected override void Start()
         {
