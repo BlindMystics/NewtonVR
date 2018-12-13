@@ -13,7 +13,7 @@ namespace NewtonVR
 {
     public class NVRSteamVRInputDevice : NVRInputDevice
     {
-        private SteamVR_Controller.Device Controller;
+        //private SteamVR_Controller.Device Controller;
 
         private int DeviceIndex = -1;
 
@@ -79,97 +79,97 @@ namespace NewtonVR
 
         public override float GetAxis1D(NVRButtons button)
         {
-            if (Controller != null)
-                return Controller.GetAxis(GetButton(button)).x;
+            //if (Controller != null)
+            //    return Controller.GetAxis(GetButton(button)).x;
 
             return 0;
         }
 
         public override Vector2 GetAxis2D(NVRButtons button)
         {
-            if (Controller != null)
-                return Controller.GetAxis(GetButton(button));
+            //if (Controller != null)
+            //    return Controller.GetAxis(GetButton(button));
 
             return Vector2.zero;
         }
 
         public override bool GetPressDown(NVRButtons button)
         {
-            if (Controller != null)
-            {
-                if (isKnuckles == true)
-                {
-                    if (button == NVRButtons.Grip)
-                    {
-                        UpdateKnucklesFingerCurl();
-                        return (wasGripped == false) && (isGripped == true);
-                    }
-                }
+            //if (Controller != null)
+            //{
+            //    if (isKnuckles == true)
+            //    {
+            //        if (button == NVRButtons.Grip)
+            //        {
+            //            UpdateKnucklesFingerCurl();
+            //            return (wasGripped == false) && (isGripped == true);
+            //        }
+            //    }
 
-                return Controller.GetPressDown(GetButton(button));
-            }
+            //    return Controller.GetPressDown(GetButton(button));
+            //}
 
             return false;
         }
 
         public override bool GetPressUp(NVRButtons button)
         {
-            if (Controller != null)
-            {
-                if (isKnuckles == true)
-                {
-                    if (button == NVRButtons.Grip)
-                    {
-                        UpdateKnucklesFingerCurl();
-                        return (wasGripped == true) && (isGripped == false);
-                    }
-                }
+            //if (Controller != null)
+            //{
+            //    if (isKnuckles == true)
+            //    {
+            //        if (button == NVRButtons.Grip)
+            //        {
+            //            UpdateKnucklesFingerCurl();
+            //            return (wasGripped == true) && (isGripped == false);
+            //        }
+            //    }
 
-                return Controller.GetPressUp(GetButton(button));
-            }
+            //    return Controller.GetPressUp(GetButton(button));
+            //}
 
             return false;
         }
 
         public override bool GetPress(NVRButtons button)
         {
-            if (Controller != null)
-            {
-                if (isKnuckles == true)
-                {
-                    if (button == NVRButtons.Grip)
-                    {
-                        UpdateKnucklesFingerCurl();
-                        return isGripped;
-                    }
-                }
+            //if (Controller != null)
+            //{
+            //    if (isKnuckles == true)
+            //    {
+            //        if (button == NVRButtons.Grip)
+            //        {
+            //            UpdateKnucklesFingerCurl();
+            //            return isGripped;
+            //        }
+            //    }
 
-                return Controller.GetPress(GetButton(button));
-            }
+            //    return Controller.GetPress(GetButton(button));
+            //}
 
             return false;
         }
 
         public override bool GetTouchDown(NVRButtons button)
         {
-            if (Controller != null)
-                return Controller.GetTouchDown(GetButton(button));
+            //if (Controller != null)
+            //    return Controller.GetTouchDown(GetButton(button));
 
             return false;
         }
 
         public override bool GetTouchUp(NVRButtons button)
         {
-            if (Controller != null)
-                return Controller.GetTouchUp(GetButton(button));
+            //if (Controller != null)
+            //    return Controller.GetTouchUp(GetButton(button));
 
             return false;
         }
 
         public override bool GetTouch(NVRButtons button)
         {
-            if (Controller != null)
-                return Controller.GetTouch(GetButton(button));
+            //if (Controller != null)
+            //    return Controller.GetTouch(GetButton(button));
 
             return false;
         }
@@ -191,13 +191,13 @@ namespace NewtonVR
 
         public override void TriggerHapticPulse(ushort durationMicroSec = 500, NVRButtons button = NVRButtons.Touchpad)
         {
-            if (Controller != null)
-            {
-                if (durationMicroSec < 3000)
-                {
-                    Controller.TriggerHapticPulse(durationMicroSec, ButtonMapping[button]);
-                }
-            }
+            //if (Controller != null)
+            //{
+            //    if (durationMicroSec < 3000)
+            //    {
+            //        Controller.TriggerHapticPulse(durationMicroSec, ButtonMapping[button]);
+            //    }
+            //}
         }
 
         public override bool IsCurrentlyTracked
@@ -217,11 +217,11 @@ namespace NewtonVR
             {
                 wasGripped = isGripped;
 
-                indexCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis3).x;
-                middleCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis3).y;
-                ringCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis4).x;
-                pinkyCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis4).y;
-                thumbTouch = Controller.GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad);
+                //indexCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis3).x;
+                //middleCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis3).y;
+                //ringCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis4).x;
+                //pinkyCurl = Controller.GetAxis(EVRButtonId.k_EButton_Axis4).y;
+                //thumbTouch = Controller.GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad);
 
                 isGripped = IsKnucklesGripped();
             }
@@ -266,7 +266,7 @@ namespace NewtonVR
         private void SetDeviceIndex(int index)
         {
             DeviceIndex = index;
-            Controller = SteamVR_Controller.Input(index);
+            //Controller = SteamVR_Controller.Input(index);
         }
 
         public override string GetDeviceName()

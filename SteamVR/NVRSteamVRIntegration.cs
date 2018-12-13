@@ -18,15 +18,15 @@ namespace NewtonVR
             Player = player;
 
 #if UNITY_5_6_OR_NEWER
-            Player.Head.gameObject.AddComponent<SteamVR_UpdatePoses>();
+            //Player.Head.gameObject.AddComponent<SteamVR_UpdatePoses>();
 #endif
 
             Player.gameObject.SetActive(false);
 
 
-            SteamVR_ControllerManager controllerManager = Player.gameObject.AddComponent<SteamVR_ControllerManager>();
-            controllerManager.left = Player.LeftHand.gameObject;
-            controllerManager.right = Player.RightHand.gameObject;
+            //SteamVR_ControllerManager controllerManager = Player.gameObject.AddComponent<SteamVR_ControllerManager>();
+            //controllerManager.left = Player.LeftHand.gameObject;
+            //controllerManager.right = Player.RightHand.gameObject;
 
             //Player.gameObject.AddComponent<SteamVR_PlayArea>();
 
@@ -48,7 +48,7 @@ namespace NewtonVR
             SteamVR_Render[] steamvr_objects = GameObject.FindObjectsOfType<SteamVR_Render>();
             for (int objectIndex = 0; objectIndex < steamvr_objects.Length; objectIndex++)
             {
-                steamvr_objects[objectIndex].lockPhysicsUpdateRateToRenderFrequency = false; //this generally seems to break things :) Just make sure your Time -> Physics Timestep is set to 0.011
+                //steamvr_objects[objectIndex].lockPhysicsUpdateRateToRenderFrequency = false; //this generally seems to break things :) Just make sure your Time -> Physics Timestep is set to 0.011
             }
         }
 
